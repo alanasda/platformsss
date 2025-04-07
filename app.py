@@ -4,8 +4,8 @@ import os
 
 app = Flask(__name__)
 
-EMAIL = os.environ.get("EMAIL")
-SENHA = os.environ.get("SENHA")
+EMAIL = os.environ.get("ferreiramateuss000@gmail.com")
+SENHA = os.environ.get("jzkn nxia hecf ejcz")
 
 yag = yagmail.SMTP(EMAIL, SENHA)
 
