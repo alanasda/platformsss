@@ -1,13 +1,14 @@
 from flask import Flask, request
 import yagmail
-import os
 
 app = Flask(__name__)
 
-EMAIL = os.environ.get("ferreiramateuss000@gmail.com")
-SENHA = os.environ.get("jzkn nxia hecf ejcz")
+# Configurações do seu Gmail
+EMAIL = "ferreiramateuss000@gmail.com"
+SENHA = "jzkn nxia hecf ejcz"  # Use senha de app se tiver 2FA
 
-yag = yagmail.SMTP(EMAIL, SENHA)
+# Inicia o cliente yagmail corretamente
+yag = yagmail.SMTP(user=EMAIL, password=SENHA)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
@@ -15,7 +16,7 @@ def webhook():
     nome = data.get("nome")
     email = data.get("email")
 
-    print(f"Recebido pedido de {nome} - {email}")
+    print(f"📥 Recebido pedido de {nome} - {email}")
 
     assunto = "🎓 Seu acesso às videoaulas"
     conteudo = f"""
@@ -28,19 +29,19 @@ def webhook():
 
     Qualquer dúvida, estamos à disposição.
 
-    — Equipe SeuNome
+    — Equipe Matheus Ferreira
     """
 
     try:
         yag.send(to=email, subject=assunto, contents=conteudo)
         return {"status": "sucesso", "mensagem": f"E-mail enviado para {email}"}, 200
     except Exception as e:
-        print("Erro ao enviar e-mail:", e)
+        print("❌ Erro ao enviar e-mail:", e)
         return {"status": "erro", "mensagem": str(e)}, 500
 
 @app.route('/ping')
 def ping():
-    return "pong", 200
+    return "✅ Online", 200
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000)
+    app.run(port=5000)
